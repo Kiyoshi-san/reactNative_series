@@ -79,6 +79,9 @@ export default class PaginaLogin extends React.Component {
 		/*CRIANDO FUNÇÕES PARA O LOGIN*/
 		const loginSucesso = usuario => {
 			this.setState({ mensagem: "Sucesso!" });
+
+			/*LEMBRANDO QUE O OBJETO "navigation É DA LIB IMPORTADA "react-navigation, EM QUE ELE IMPORTA AS PROPS*/
+			this.props.navigation.navigate("paginaPrincipal");
 		}
 		const loginFracasso = usuario => {
 			this.setState({ mensagem: this.getMensagemPeloCodigoDeErro(erro.code) });
@@ -96,7 +99,7 @@ export default class PaginaLogin extends React.Component {
 				OU
 				UTILIZANDO A FUNÇÃO ACIMA PARA DEIXAR O CODIGO MENOS POLUIDO
 				}*/
-				this.loginSucesso
+				this.loginSucesso(usuario)
 			)
 			.catch(erro => {
 
@@ -130,7 +133,7 @@ export default class PaginaLogin extends React.Component {
 										OU
 										UTILIZANDO A FUNÇÃO ACIMA PARA DEIXAR O CODIGO MENOS POLUIDO
 										}*/
-										this.loginSucesso
+										this.loginSucesso(usuario)
 									)
 									.catch(
 										/*erro => {
@@ -141,7 +144,7 @@ export default class PaginaLogin extends React.Component {
 										OU
 										UTILIZANDO A FUNÇÃO ACIMA PARA DEIXAR O CODIGO MENOS POLUIDO
 										}*/
-										this.loginFracasso
+										this.loginFracasso(erro)
 									)
 							}
 						}],
@@ -169,7 +172,7 @@ export default class PaginaLogin extends React.Component {
 					});
 					OU
 					UTILIZANDO A FUNÇÃO ACIMA PARA DEIXAR O CODIGO MENOS POLUIDO*/
-					loginFracasso
+					this.loginFracasso(erro)
 				}
 			})
 			.then(() => this.setState({ estaCarregando: false }));
