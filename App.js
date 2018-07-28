@@ -20,7 +20,7 @@ export default StackNavigator({
     headerStyle: {
       backgroundColor: "#20144D",
       borderBottomWidth: 1,
-      borderBottomColor: "#C5C5C5"
+      borderBottomColor: "#C5C5C5",
     },
     headerTitleStyle: {
       color: "#fff",
