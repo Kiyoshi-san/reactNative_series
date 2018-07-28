@@ -13,11 +13,11 @@ export default StackNavigator({
     navigationOptions: {
       title: "Bem vindo!",
     }
-  }
-}, {
+  },
   "paginaPrincipal": {
     screen: SeriesPage
   }
+
 },{
   navigationOptions: {
     title: "Series!",
