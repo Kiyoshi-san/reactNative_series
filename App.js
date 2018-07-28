@@ -1,5 +1,6 @@
 import { StackNavigator }from "react-navigation";
 import PaginaLogin from "./src/pages/PaginaLogin";
+import SeriesPage from "./src/pages/SeriesPage";
 
 
 /*2 parametros
@@ -14,6 +15,10 @@ export default StackNavigator({
     }
   }
 }, {
+  "paginaPrincipal": {
+    screen: SeriesPage
+  }
+},{
   navigationOptions: {
     title: "Series!",
     headerTintColor: "#fff",
