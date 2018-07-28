@@ -85,9 +85,34 @@ export default class PaginaLogin extends React.Component {
 			})
 			.catch(erro => {
 				// console.log("Usuario nao encontrado!", erro);
-				this.setState({ mensagem: "Nao foi possivel logar!" })
+				/*this.setState({ mensagem: "Nao foi possivel logar!" })
+				OU
+				USANDO A MSG DEFAULT DO FIREBASE
+				*/
+
+				/*this.setState({ mensagem: erro.message });
+				OU
+				AO INVES DE TRAZER A MENSAGEM DE ERRO, QUE ESTA EM IGLES, É MAIS INTERESSANTE TRAZER O COIGO DO ERRO, PARA TRATAR NUM IF E TRAZER A MENSAGEM TRATADA PARA O PORTUGUES
+				PODERA VIR 2 TIPOS DE CODIGOS DE ERRO
+				- auth/wrong-password
+				- auth/user-not-found
+				*/
+				this.setState({
+					mensagem: this.getMensagemPeloCodigoDeErro(erro.code)
+				});
 			})
 			.then(() => this.setState({ estaCarregando: false }));
+	}
+
+	getMensagemPeloCodigoDeErro(codigoErro) {
+		switch (codigoErro) {
+			case "auth/wrong-password":
+				return "Senha incorreta";
+			case "auth/user-not-found":
+				return "Usuario nao encontrado!";
+			default:
+				return "Erro desconhecido";
+		}
 	}
 
 	renderizarBotao() {
