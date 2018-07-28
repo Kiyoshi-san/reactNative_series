@@ -5,7 +5,8 @@ import {
 	TextInput,
 	Text,
 	Button,
-	ActivityIndicator /*Simbolo do Loading*/
+	ActivityIndicator, /*Simbolo do Loading*/
+	Alert
 
 } from "react-native";
 import LinhaFormulario from "../components/LinhaFormulario";
@@ -75,31 +76,101 @@ export default class PaginaLogin extends React.Component {
 		this.setState({ estaCarregando: true });
 		const { email, senha } = this.state;
 
+		/*CRIANDO FUNÇÕES PARA O LOGIN*/
+		const loginSucesso = usuario => {
+			this.setState({ mensagem: "Sucesso!" });
+		}
+		const loginFracasso = usuario => {
+			this.setState({ mensagem: this.getMensagemPeloCodigoDeErro(erro.code) });
+		}
+
+
+
 		firebase
 			.auth()
 			// .signInWithEmailAndPassword("teste@teste.com","12341234")
 			.signInWithEmailAndPassword(email, senha)
-			.then(usuario => {
+			.then(/*usuario => {
 				// console.log("Usuario autenticado!", usuario);
 				this.setState({ mensagem: "Sucesso!" });
-			})
+				OU
+				UTILIZANDO A FUNÇÃO ACIMA PARA DEIXAR O CODIGO MENOS POLUIDO
+				}*/
+				this.loginSucesso
+			)
 			.catch(erro => {
-				// console.log("Usuario nao encontrado!", erro);
-				/*this.setState({ mensagem: "Nao foi possivel logar!" })
-				OU
-				USANDO A MSG DEFAULT DO FIREBASE
-				*/
 
-				/*this.setState({ mensagem: erro.message });
-				OU
-				AO INVES DE TRAZER A MENSAGEM DE ERRO, QUE ESTA EM IGLES, É MAIS INTERESSANTE TRAZER O COIGO DO ERRO, PARA TRATAR NUM IF E TRAZER A MENSAGEM TRATADA PARA O PORTUGUES
-				PODERA VIR 2 TIPOS DE CODIGOS DE ERRO
-				- auth/wrong-password
-				- auth/user-not-found
-				*/
-				this.setState({
-					mensagem: this.getMensagemPeloCodigoDeErro(erro.code)
-				});
+				if(erro.code === "auth/user-not-found"){
+					/*Alert - classe que o React Native nos expoe
+					alert - metodo dentro da class Alert
+						- recebe 4 parametros
+							- titulo,
+							- mensagem,
+							- Array de botões - recebem objetos - como text, onPress, Style
+							- Objeto de configuração
+
+					*/
+					Alert.alert("Usuário não encontrado", "Deseja criar um novo cadastro, com as informações fornecidas?",
+						/*se tiver 2 botoes o primeiro botão será negativo e o segundo positivo*/
+						[{
+							text: "Não",
+							onPress: () => {
+								console.log("Usuario não quer criar uma conta");
+								style: "cancel" // Apenas para o IOS
+							}
+						},{
+							text: "Sim",
+							onPress: () => {
+								firebase
+									.auth()
+									.createUserWithEmailAndPassword(email, senha)
+									.then(/*usuario => {
+										// console.log("Usuario autenticado!", usuario);
+										this.setState({ mensagem: "Sucesso!" });
+										OU
+										UTILIZANDO A FUNÇÃO ACIMA PARA DEIXAR O CODIGO MENOS POLUIDO
+										}*/
+										this.loginSucesso
+									)
+									.catch(
+										/*erro => {
+											this.setState({
+												mensagem: this.getMensagemPeloCodigoDeErro(this.code)
+											})
+										}
+										OU
+										UTILIZANDO A FUNÇÃO ACIMA PARA DEIXAR O CODIGO MENOS POLUIDO
+										}*/
+										this.loginFracasso
+									)
+							}
+						}],
+						/*Não permite cancelar - ou clicar fora do alert para sumi-la*/
+						{ cancelable: false }
+						);
+				} else {
+
+					// console.log("Usuario nao encontrado!", erro);
+					/*this.setState({ mensagem: "Nao foi possivel logar!" })
+					OU
+					USANDO A MSG DEFAULT DO FIREBASE
+					*/
+
+					/*this.setState({ mensagem: erro.message });
+					OU
+					AO INVES DE TRAZER A MENSAGEM DE ERRO, QUE ESTA EM IGLES, É MAIS INTERESSANTE TRAZER O COIGO DO ERRO, PARA TRATAR NUM IF E TRAZER A MENSAGEM TRATADA PARA O PORTUGUES
+					PODERA VIR 2 TIPOS DE CODIGOS DE ERRO
+					- auth/wrong-password
+					- auth/user-not-found
+					*/
+
+					/*this.setState({
+						mensagem: this.getMensagemPeloCodigoDeErro(erro.code)
+					});
+					OU
+					UTILIZANDO A FUNÇÃO ACIMA PARA DEIXAR O CODIGO MENOS POLUIDO*/
+					loginFracasso
+				}
 			})
 			.then(() => this.setState({ estaCarregando: false }));
 	}
@@ -110,6 +181,8 @@ export default class PaginaLogin extends React.Component {
 				return "Senha incorreta";
 			case "auth/user-not-found":
 				return "Usuario nao encontrado!";
+			case "auth/invalid-email":
+				return "Email Invalido!";
 			default:
 				return "Erro desconhecido";
 		}
