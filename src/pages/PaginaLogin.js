@@ -110,7 +110,7 @@ export default class PaginaLogin extends React.Component {
 							- Objeto de configuração
 
 					*/
-					Alert.alert("Usuário não encontrado", "Deseja criar um novo cadastro, com as informações fornecidas?",
+					Alert.alert("Usuário não encontrado", "Deseja criar um novo cadastro, com as informações fornecidas*-?",
 						/*se tiver 2 botoes o primeiro botão será negativo e o segundo positivo*/
 						[{
 							text: "Não",
