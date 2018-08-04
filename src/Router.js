@@ -16,7 +16,7 @@ export default StackNavigator({
       title: "Bem vindo!",
     }
   },
-  "paginaPrincipal": {
+  "PaginaPrincipal": {
     screen: SeriesPage
   }
 

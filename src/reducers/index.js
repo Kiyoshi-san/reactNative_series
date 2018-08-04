@@ -1,7 +1,10 @@
 import { combineReducers } from "redux";
 
+import reducerUsuario from "./reducerUsuario";
 
-
-export default combineReducers({
-    qualquer: (state = [], action) => state
+const rootReducers = combineReducers({
+    usuario: reducerUsuario
 });
+
+
+export default rootReducers;
