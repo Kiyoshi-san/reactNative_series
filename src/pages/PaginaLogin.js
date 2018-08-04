@@ -12,7 +12,14 @@ import {
 import LinhaFormulario from "../components/LinhaFormulario";
 import firebase from "firebase";
 
-export default class PaginaLogin extends React.Component {
+/* IMPORTANDO A FUNÇÃO DO ACTION CREATOR "tentaLogar()" */
+import { tentaLogar } from "../actions";
+
+import { connect } from "react-redux";
+
+/* MANDANDO O "export default" LA PRA BAIXO PARA COLOCAR O COMPONENTE "connect()" */
+/* export default  */
+class PaginaLogin extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -39,17 +46,17 @@ export default class PaginaLogin extends React.Component {
 
 	}
 
-	/*fn_atualiza_valor_simult(valor) {
-		this.setState ({
-			email: valor,
-		})
-	}
-	fn_atualiza_senha_simult(senha) {
-		this.setState ({ 		senha: senha
-		})
-	}
-	OU
-	*/
+	// fn_atualiza_valor_simult(valor) {
+		// this.setState ({
+			// email: valor,
+		// })
+	// }
+	// fn_atualiza_senha_simult(senha) {
+		// this.setState ({ 		senha: senha
+		// })
+	// }
+	// OU
+
 	fnMudouInput(referencia, valor) {
 
 		//	const newState = {};
@@ -72,15 +79,16 @@ export default class PaginaLogin extends React.Component {
 	}
 
 
-	tentaLogar() {
-		this.setState({ estaCarregando: true });
+	tentaLogarLocal() {
+		this.setState({ estaCarregando: true, mensagem: "" });
 		const { email, senha } = this.state;
 
-		/*CRIANDO FUNÇÕES PARA O LOGIN*/
+		/* COLANDO TODO ESSE CODIGO COMENTADO EM "userActions.js"
+ 		// CRIANDO FUNÇÕES PARA O LOGIN
 		const loginSucesso = usuario => {
 			this.setState({ mensagem: "Sucesso!" });
 
-			/*LEMBRANDO QUE O OBJETO "navigation É DA LIB IMPORTADA "react-navigation, EM QUE ELE IMPORTA AS PROPS*/
+			// LEMBRANDO QUE O OBJETO "navigation É DA LIB IMPORTADA "react-navigation, EM QUE ELE IMPORTA AS PROPS
 			this.props.navigation.navigate("paginaPrincipal");
 		}
 		const loginFracasso = erro => {
@@ -93,28 +101,28 @@ export default class PaginaLogin extends React.Component {
 			.auth()
 			// .signInWithEmailAndPassword("teste@teste.com","12341234")
 			.signInWithEmailAndPassword(email, senha)
-			.then(/*usuario => {
+			.then(//usuario => {
 				// console.log("Usuario autenticado!", usuario);
-				this.setState({ mensagem: "Sucesso!" });
-				OU
-				UTILIZANDO A FUNÇÃO ACIMA PARA DEIXAR O CODIGO MENOS POLUIDO
-				}*/
+				// this.setState({ mensagem: "Sucesso!" });
+				// OU
+				// UTILIZANDO A FUNÇÃO ACIMA PARA DEIXAR O CODIGO MENOS POLUIDO
+				// }
 				loginSucesso
 			)
 			.catch(erro => {
 
 				if(erro.code === "auth/user-not-found"){
-					/*Alert - classe que o React Native nos expoe
-					alert - metodo dentro da class Alert
-						- recebe 4 parametros
-							- titulo,
-							- mensagem,
-							- Array de botões - recebem objetos - como text, onPress, Style
-							- Objeto de configuração
+					//Alert - classe que o React Native //nos expoe
+					//alert - metodo dentro da class //Alert
+					//	- recebe 4 parametros
+					//		- titulo,
+					//		- mensagem,
+					//		- Array de botões - recebem objetos - como text, onPress, Style
+					//		- Objeto de configuração
 
-					*/
+					
 					Alert.alert("Usuário não encontrado", "Deseja criar um novo cadastro, com as informações fornecidas*-?",
-						/*se tiver 2 botoes o primeiro botão será negativo e o segundo positivo*/
+						// se tiver 2 botoes o primeiro botão será negativo e o segundo positivo
 						[{
 							text: "Não",
 							onPress: () => {
@@ -127,55 +135,61 @@ export default class PaginaLogin extends React.Component {
 								firebase
 									.auth()
 									.createUserWithEmailAndPassword(email, senha)
-									.then(/*usuario => {
+									.then(//usuario => {
 										// console.log("Usuario autenticado!", usuario);
-										this.setState({ mensagem: "Sucesso!" });
-										OU
-										UTILIZANDO A FUNÇÃO ACIMA PARA DEIXAR O CODIGO MENOS POLUIDO
-										}*/
+										// this.setState({ mensagem: "Sucesso!" });
+										// OU
+										// UTILIZANDO A FUNÇÃO ACIMA PARA DEIXAR O CODIGO MENOS POLUIDO
+										// }
 										loginSucesso
 									)
 									.catch(
-										/*erro => {
-											this.setState({
-												mensagem: this.getMensagemPeloCodigoDeErro(this.code)
-											})
-										}
-										OU
-										UTILIZANDO A FUNÇÃO ACIMA PARA DEIXAR O CODIGO MENOS POLUIDO
-										}*/
+										// erro => {
+											// this.setState({
+												// mensagem: this.getMensagemPeloCodigoDeErro(this.code)
+											// })
+										// }
+										// OU
+										// UTILIZANDO A FUNÇÃO ACIMA PARA DEIXAR O CODIGO MENOS POLUIDO
+										// }
 										loginFracasso(erro)
 									)
 							}
 						}],
-						/*Não permite cancelar - ou clicar fora do alert para sumi-la*/
+						// Não permite cancelar - ou clicar fora do alert para sumi-la
 						{ cancelable: false }
 						);
 				} else {
 
 					// console.log("Usuario nao encontrado!", erro);
-					/*this.setState({ mensagem: "Nao foi possivel logar!" })
-					OU
-					USANDO A MSG DEFAULT DO FIREBASE
-					*/
+					// this.setState({ mensagem: "Nao foi possivel logar!" })
+					// OU
+					// USANDO A MSG DEFAULT DO FIREBASE
 
-					/*this.setState({ mensagem: erro.message });
-					OU
-					AO INVES DE TRAZER A MENSAGEM DE ERRO, QUE ESTA EM IGLES, É MAIS INTERESSANTE TRAZER O COIGO DO ERRO, PARA TRATAR NUM IF E TRAZER A MENSAGEM TRATADA PARA O PORTUGUES
-					PODERA VIR 2 TIPOS DE CODIGOS DE ERRO
-					- auth/wrong-password
-					- auth/user-not-found
-					*/
+					// this.setState({ mensagem: erro.message });
+					// OU
+					// AO INVES DE TRAZER A MENSAGEM DE ERRO, QUE ESTA EM IGLES, É MAIS INTERESSANTE TRAZER O COIGO DO ERRO, PARA TRATAR NUM IF E TRAZER A MENSAGEM TRATADA PARA O PORTUGUES
+					// PODERA VIR 2 TIPOS DE CODIGOS DE ERRO
+					// - auth/wrong-password
+					// - auth/user-not-found
 
-					/*this.setState({
-						mensagem: this.getMensagemPeloCodigoDeErro(erro.code)
-					});
-					OU
-					UTILIZANDO A FUNÇÃO ACIMA PARA DEIXAR O CODIGO MENOS POLUIDO*/
+					// this.setState({
+						// mensagem: this.getMensagemPeloCodigoDeErro(erro.code)
+					// });
+					// OU
+					// UTILIZANDO A FUNÇÃO ACIMA PARA DEIXAR O CODIGO MENOS POLUIDO
 					loginFracasso(erro)
 				}
 			})
-			.then(() => this.setState({ estaCarregando: false }));
+			.then(() => this.setState({ estaCarregando: false })); */
+
+			/* ENVIANDO ATRAVES DA PROPS O OBJETO "{ email, senha }" PARA A ACTION "actions/userAction.js" */
+			this.props.tentaLogar({ email, senha })
+				.then(() => {
+					this.setState({ message: "Sucesso!" });
+					// this.props.navigation.navigate("PaginaPrincipal"); // O "replace" APAGA O HISTORICO DE NAVEGAÇÃO, ENTAO NAO TERA A "SETINHA" PARA VOLTAR A PAGINA
+					this.props.navigation.replace("PaginaPrincipal");
+				})
 	}
 
 	getMensagemPeloCodigoDeErro(codigoErro) {
@@ -197,7 +211,7 @@ export default class PaginaLogin extends React.Component {
 		return (
 			<Button 
 				title="Entrar" 
-				onPress={() => this.tentaLogar()}
+				onPress={() => this.tentaLogarLocal()}
 				/>
 		);
 	}
@@ -266,3 +280,7 @@ const estilo = StyleSheet.create ({
 		paddingBottom: 5,
 	},
 });
+
+/* export default connect(mapStateToProps, mapDispatchToProps || { actionCreator })(PaginaLogin);*/
+// tentaLogar - RECEBENDO DO "import { tentaLogar } from "../actions";"
+export default connect(null, { tentaLogar })(PaginaLogin);
