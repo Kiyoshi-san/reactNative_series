@@ -190,6 +190,9 @@ class PaginaLogin extends React.Component {
 					// this.props.navigation.navigate("PaginaPrincipal"); // O "replace" APAGA O HISTORICO DE NAVEGAÇÃO, ENTAO NAO TERA A "SETINHA" PARA VOLTAR A PAGINA
 					this.props.navigation.replace("PaginaPrincipal");
 				})
+				// .catch(error => {
+					
+				// });
 	}
 
 	getMensagemPeloCodigoDeErro(codigoErro) {
