@@ -12,15 +12,15 @@ import SeriesPage from "./pages/SeriesPage";
 */
 // export default StackNavigator({
 export default createStackNavigator({
+  "PaginaPrincipal": {
+    screen: SeriesPage
+  },
   "Login": {
     screen: PaginaLogin,
     navigationOptions: {
       title: "Bem vindo!",
     }
   },
-  "PaginaPrincipal": {
-    screen: SeriesPage
-  }
 
 },{
   navigationOptions: {
