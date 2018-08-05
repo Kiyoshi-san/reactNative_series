@@ -42,76 +42,75 @@ export const tentaLogar = ({ email, senha }) => dispatch => {
 				// .then(() => {
 				dispatch(acao);
 			})
-			// .catch(erro => {
+			.catch(erro => {
 
-			// 	if(erro.code === "auth/user-not-found"){
-			// 		//Alert - classe que o React Native //nos expoe
-			// 		//alert - metodo dentro da class //Alert
-			// 		//	- recebe 4 parametros
-			// 		//		- titulo,
-			// 		//		- mensagem,
-			// 		//		- Array de botões - recebem objetos - como text, onPress, Style
-			// 		//		- Objeto de configuração
+				if(erro.code === "auth/user-not-found"){
+					//Alert - classe que o React Native //nos expoe
+					//alert - metodo dentro da class //Alert
+					//	- recebe 4 parametros
+					//		- titulo,
+					//		- mensagem,
+					//		- Array de botões - recebem objetos - como text, onPress, Style
+					//		- Objeto de configuração
 
 					
-			// 		Alert.alert("Usuário não encontrado", "Deseja criar um novo cadastro, com as informações fornecidas*-?",
-			// 			// se tiver 2 botoes o primeiro botão será negativo e o segundo positivo
-			// 			[{
-			// 				text: "Não",
-			// 				onPress: () => {
-			// 					console.log("Usuario não quer criar uma conta");
-			// 					style: "cancel" // Apenas para o IOS
-			// 				}
-			// 			},{
-			// 				text: "Sim",
-			// 				onPress: () => {
-			// 					firebase
-			// 						.auth()
-			// 						.createUserWithEmailAndPassword(email, senha)
-			// 						.then(usuario => {
+					Alert.alert("Usuário não encontrado", "Deseja criar um novo cadastro, com as informações fornecidas?",
+						// se tiver 2 botoes o primeiro botão será negativo e o segundo positivo
+						[{
+							text: "Não",
+							onPress: () => {
+								console.log("Usuario não quer criar uma conta");
+								style: "cancel" // Apenas para o IOS
+							}
+						},{
+							text: "Sim",
+							onPress: () => {
+								firebase
+									.auth()
+									.createUserWithEmailAndPassword(email, senha)
+									.then(usuario => {
+										usuarioLoginSucesso
 
-			// 						}
-			// 							usuarioLoginSucesso
-			// 						)
-			// 						.catch(
-			// 							// erro => {
-			// 								// this.setState({
-			// 									// mensagem: this.getMensagemPeloCodigoDeErro(this.code)
-			// 								// })
-			// 							// }
-			// 							// OU
-			// 							// UTILIZANDO A FUNÇÃO ACIMA PARA DEIXAR O CODIGO MENOS POLUIDO
-			// 							// }
-			// 							loginFracasso(erro)
-			// 						)
-			// 				}
-			// 			}],
-			// 			// Não permite cancelar - ou clicar fora do alert para sumi-la
-			// 			{ cancelable: false }
-			// 			);
-			// 	} else {
+									})
+									.catch(
+										// erro => {
+											// this.setState({
+												// mensagem: this.getMensagemPeloCodigoDeErro(this.code)
+											// })
+										// }
+										// OU
+										// UTILIZANDO A FUNÇÃO ACIMA PARA DEIXAR O CODIGO MENOS POLUIDO
+										// }
+										loginFracasso(erro)
+									)
+							}
+						}],
+						// Não permite cancelar - ou clicar fora do alert para sumi-la
+						{ cancelable: false }
+						);
+				} else {
 
-			// 		// console.log("Usuario nao encontrado!", erro);
-			// 		// this.setState({ mensagem: "Nao foi possivel logar!" })
-			// 		// OU
-			// 		// USANDO A MSG DEFAULT DO FIREBASE
+					// console.log("Usuario nao encontrado!", erro);
+					// this.setState({ mensagem: "Nao foi possivel logar!" })
+					// OU
+					// USANDO A MSG DEFAULT DO FIREBASE
 
-			// 		// this.setState({ mensagem: erro.message });
-			// 		// OU
-			// 		// AO INVES DE TRAZER A MENSAGEM DE ERRO, QUE ESTA EM IGLES, É MAIS INTERESSANTE TRAZER O COIGO DO ERRO, PARA TRATAR NUM IF E TRAZER A MENSAGEM TRATADA PARA O PORTUGUES
-			// 		// PODERA VIR 2 TIPOS DE CODIGOS DE ERRO
-			// 		// - auth/wrong-password
-			// 		// - auth/user-not-found
+					// this.setState({ mensagem: erro.message });
+					// OU
+					// AO INVES DE TRAZER A MENSAGEM DE ERRO, QUE ESTA EM IGLES, É MAIS INTERESSANTE TRAZER O COIGO DO ERRO, PARA TRATAR NUM IF E TRAZER A MENSAGEM TRATADA PARA O PORTUGUES
+					// PODERA VIR 2 TIPOS DE CODIGOS DE ERRO
+					// - auth/wrong-password
+					// - auth/user-not-found
 
-			// 		// this.setState({
-			// 			// mensagem: this.getMensagemPeloCodigoDeErro(erro.code)
-			// 		// });
-			// 		// OU
-			// 		// UTILIZANDO A FUNÇÃO ACIMA PARA DEIXAR O CODIGO MENOS POLUIDO
-			// 		loginFracasso(erro)
-			// 	}
-			// })
-			// .then(() => this.setState({ estaCarregando: false }));
+					// this.setState({
+						// mensagem: this.getMensagemPeloCodigoDeErro(erro.code)
+					// });
+					// OU
+					// UTILIZANDO A FUNÇÃO ACIMA PARA DEIXAR O CODIGO MENOS POLUIDO
+					loginFracasso(erro)
+				}
+			})
+			.then(() => this.setState({ estaCarregando: false }));
 
 }
 
