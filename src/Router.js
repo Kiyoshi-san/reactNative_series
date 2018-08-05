@@ -1,6 +1,7 @@
 // ROUTER VAI GUARDAR TODA A NOSSA LOGICA DE ROTEAMENTE - TODAS AS PAGINAS ESTARAO LA
 
-import { StackNavigator }from "react-navigation";
+// import { StackNavigator }from "react-navigation";
+import { createStackNavigator }from "react-navigation";
 import PaginaLogin from "./pages/PaginaLogin";
 import SeriesPage from "./pages/SeriesPage";
 
@@ -9,7 +10,8 @@ import SeriesPage from "./pages/SeriesPage";
 - config das paginas
 - Objeto de configuração - Configuração default de todas as paginas
 */
-export default StackNavigator({
+// export default StackNavigator({
+export default createStackNavigator({
   "Login": {
     screen: PaginaLogin,
     navigationOptions: {

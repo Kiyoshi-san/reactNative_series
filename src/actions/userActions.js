@@ -1,4 +1,5 @@
 import firebase from "firebase";
+import { Alert } from "react-native";
 
 /* FAREMOS AQUI APENAS NAMED  EXPORT - export default ...*/
 
@@ -41,53 +42,55 @@ export const tentaLogar = ({ email, senha }) => dispatch => {
 				// - 			this.props.tentaLogar({ email, senha })
 				// .then(() => {
 				dispatch(acao);
+				return usuario;
 			})
 			.catch(erro => {
 
 				if(erro.code === "auth/user-not-found"){
-					//Alert - classe que o React Native //nos expoe
-					//alert - metodo dentro da class //Alert
-					//	- recebe 4 parametros
-					//		- titulo,
-					//		- mensagem,
-					//		- Array de botões - recebem objetos - como text, onPress, Style
-					//		- Objeto de configuração
+					return new Promise((resolve, reject) => {
+						//Alert - classe que o React Native //nos expoe
+						//alert - metodo dentro da class //Alert
+						//	- recebe 4 parametros
+						//		- titulo,
+						//		- mensagem,
+						//		- Array de botões - recebem objetos - como text, onPress, Style
+						//		- Objeto de configuração
 
-					
-					Alert.alert("Usuário não encontrado", "Deseja criar um novo cadastro, com as informações fornecidas?",
-						// se tiver 2 botoes o primeiro botão será negativo e o segundo positivo
-						[{
-							text: "Não",
-							onPress: () => {
-								console.log("Usuario não quer criar uma conta");
+						
+						Alert.alert("Usuário não encontrado", "Deseja criar um novo cadastro, com as informações fornecidas?",
+							// se tiver 2 botoes o primeiro botão será negativo e o segundo positivo
+							[{
+								text: "Não",
+								onPress: () => resolve(), // QDO CLICA EM RESOLVE ELE VAI PARA O PROXIMO ".then" - QUE É NA "PaginaLogin.js" - ONDE ESTA O CODIGO: this.props.tentaLogar({ email, senha }) - ENTAO ATUALMENTE ELE JA ESTA ENCAMINHANDO PARA A PROXIMA PAGINA, MSM QUE O USUARIO NAO QUEIRA CRIAR UM NOVO USUARIO
 								style: "cancel" // Apenas para o IOS
-							}
-						},{
-							text: "Sim",
-							onPress: () => {
-								firebase
-									.auth()
-									.createUserWithEmailAndPassword(email, senha)
-									.then(usuario => {
-										usuarioLoginSucesso
-
-									})
-									.catch(
-										// erro => {
-											// this.setState({
-												// mensagem: this.getMensagemPeloCodigoDeErro(this.code)
-											// })
-										// }
-										// OU
-										// UTILIZANDO A FUNÇÃO ACIMA PARA DEIXAR O CODIGO MENOS POLUIDO
-										// }
-										loginFracasso(erro)
-									)
-							}
-						}],
-						// Não permite cancelar - ou clicar fora do alert para sumi-la
-						{ cancelable: false }
-						);
+							},{
+								text: "Sim",
+								onPress: () => {
+									firebase
+										.auth()
+										.createUserWithEmailAndPassword(email, senha)
+										.then(
+											// usuario => { usuarioLoginSucesso })
+											// usuario => { resolve(usuario) })
+											resolve)
+										.catch(
+											// erro => {
+												// this.setState({
+													// mensagem: this.getMensagemPeloCodigoDeErro(this.code)
+												// })
+											// }
+											// OU
+											// UTILIZANDO A FUNÇÃO ACIMA PARA DEIXAR O CODIGO MENOS POLUIDO
+											// }
+											// loginFracasso(erro)
+											loginFracasso(reject)
+										)
+								}
+							}],
+							// Não permite cancelar - ou clicar fora do alert para sumi-la
+							{ cancelable: false }
+						);						
+					});
 				} else {
 
 					// console.log("Usuario nao encontrado!", erro);
@@ -107,10 +110,12 @@ export const tentaLogar = ({ email, senha }) => dispatch => {
 					// });
 					// OU
 					// UTILIZANDO A FUNÇÃO ACIMA PARA DEIXAR O CODIGO MENOS POLUIDO
-					loginFracasso(erro)
+					// loginFracasso(erro) // OU
+					// return new Promise((resolve, reject) => reject()) // OU
+					return Promise.reject(erro);
+					
 				}
 			})
-			.then(() => this.setState({ estaCarregando: false }));
 
 }
 

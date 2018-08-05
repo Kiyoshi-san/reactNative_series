@@ -185,14 +185,27 @@ class PaginaLogin extends React.Component {
 
 			/* ENVIANDO ATRAVES DA PROPS O OBJETO "{ email, senha }" PARA A ACTION "actions/userAction.js" */
 			this.props.tentaLogar({ email, senha })
-				.then(() => {
-					this.setState({ message: "Sucesso!" });
-					// this.props.navigation.navigate("PaginaPrincipal"); // O "replace" APAGA O HISTORICO DE NAVEGAÇÃO, ENTAO NAO TERA A "SETINHA" PARA VOLTAR A PAGINA
-					this.props.navigation.replace("PaginaPrincipal");
+				// .then(() => {
+				.then(usuario => {
+					if (usuario) {
+						// this.props.navigation.navigate("PaginaPrincipal"); // O "replace" APAGA O HISTORICO DE NAVEGAÇÃO, ENTAO NAO TERA A "SETINHA" PARA VOLTAR A PAGINA
+						return this.props.navigation.replace("PaginaPrincipal");
+					}
+
+					this.setState({
+						estaCarregando: false,
+						mensagem: ""
+					})
 				})
-				// .catch(error => {
-					
-				// });
+				.catch(erro => {
+					// console.log("caiu no catch", erro.code);
+					this.setState({ 
+						estaCarregando: false,
+						// DEVOLVE A MSG AMIGAVEL
+						mensagem: this.getMensagemPeloCodigoDeErro(erro.code)
+					});
+		const { email, senha } = this.state;
+				});
 	}
 
 	getMensagemPeloCodigoDeErro(codigoErro) {
