@@ -4,6 +4,7 @@
 import { createStackNavigator }from "react-navigation";
 import PaginaLogin from "./pages/PaginaLogin";
 import SeriesPage from "./pages/SeriesPage";
+import SeriesDetailPage from "./pages/SeriesDetailPage";
 
 
 /*2 parametros
@@ -12,15 +13,28 @@ import SeriesPage from "./pages/SeriesPage";
 */
 // export default StackNavigator({
 export default createStackNavigator({
-  "PaginaPrincipal": {
-    screen: SeriesPage
-  },
   "Login": {
     screen: PaginaLogin,
     navigationOptions: {
       title: "Bem vindo!",
     }
   },
+  "PaginaPrincipal": {
+    screen: SeriesPage
+  },
+  "PaginaDetalhe": {
+    screen: SeriesDetailPage,
+    // navigationOptions: {
+    //   title: "Página de Detalhes"
+    // }
+    navigationOptions: ({ navigation }) => {
+      const { serie } = navigation.state.params;
+      return {
+          // title: "Página de Detalhes"
+          title: serie.title
+      }
+    }
+  }
 
 },{
   navigationOptions: {

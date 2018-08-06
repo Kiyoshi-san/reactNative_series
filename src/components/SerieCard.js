@@ -4,13 +4,17 @@ import {
     Text, 
     StyleSheet, 
     Dimensions,
-    Image
+    Image,
+    TouchableOpacity,
 } from "react-native";
 
-const SerieCard = ({ serie, isPrimeiraColuna }) => (
-    <View style={[
-        estilo.container, 
-        isPrimeiraColuna ? estilo.primeiraColuna : estilo.ultimaColuna
+const SerieCard = ({ serie, isPrimeiraColuna, navegar }) => (
+    <TouchableOpacity 
+        // onPress={() => navegar(serie)}
+        onPress={navegar}
+        style={[
+            estilo.container, 
+            isPrimeiraColuna ? estilo.primeiraColuna : estilo.ultimaColuna
     ]}>
         <View style={estilo.card}>
             <Image 
@@ -25,7 +29,7 @@ const SerieCard = ({ serie, isPrimeiraColuna }) => (
                 <Text style={estilo.cardTitle}>{serie.title}</Text>
             </View>
         </View>
-    </View>
+    </TouchableOpacity>
 );
 
 const estilo = StyleSheet.create({

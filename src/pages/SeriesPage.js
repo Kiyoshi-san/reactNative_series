@@ -15,6 +15,8 @@ const SeriesPage = (props) => (
 				<SerieCard 
 					serie={item} 
 					isPrimeiraColuna={ fn_isPar(index) }
+					// navegar={serie => props.navigation.navigate("SerieDetailPage", serie)}
+					navegar={() => props.navigation.navigate("PaginaDetalhe", { serie: item })}
 				/>
 			)}
 			// QDO CARREGAMOS UM JSON, É ESPERADO UMA KEY DO OBJETO, PARA ISSO UTILIZAREMOS A keyExtractor - COMO A ID É UNICA SERVIRA DE KEY
